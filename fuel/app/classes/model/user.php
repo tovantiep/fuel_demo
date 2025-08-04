@@ -15,6 +15,10 @@ class Model_User extends \Orm\Model
 			"label" => "Email",
 			"data_type" => "varchar",
 		),
+        "password" => array(
+            "label" => "Password",
+            "data_type" => "varchar",
+        ),
 		"created_at" => array(
 			"label" => "Created at",
 			"data_type" => "int",
