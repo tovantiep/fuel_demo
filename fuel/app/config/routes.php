@@ -39,8 +39,15 @@ return array(
 	 */
 
 	'hello(/:name)?' => array('welcome/hello', 'name' => 'hello'),
-    'users/create' => array('users/create'),
-    'users/index' => array('users/index'),
-    'users/update' => array('users/update'),
-    'users/delete' => array('users/delete'),
+
+    'users/create'        => array('users/create'),
+    'users/index'         => array('users/index'),
+    'users/update/(:num)' => 'users/update/$1',
+    'users/delete/(:num)' => 'users/delete/$1',
+
+    'login' => 'login/login',
+    'register' => 'login/register',
+    'logout' => 'login/logout',
+    'profile' => 'login/profile',
+    'change_password' => 'login/change_password',
 );

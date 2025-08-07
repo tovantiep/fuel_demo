@@ -38,8 +38,22 @@
 <body>
     <!-- Header -->
     <header class="py-3 px-4 mb-3">
-        <div class="container-fluid">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
             <h1 class="h4 mb-0">Management System</h1>
+
+            <?php if (\Auth::check()): ?>
+                <div class="d-flex align-items-center">
+                <span class="me-3">
+                    Hello, <strong><?= e(\Auth::get_screen_name()) ?></strong>
+                </span>
+                    <?= Html::anchor('login/profile', '<i class="bi bi-person-circle"></i> Change Password', [
+                        'class' => 'btn btn-sm btn-light me-2'
+                    ]) ?>
+                    <?= Html::anchor('login/logout', '<i class="bi bi-box-arrow-right"></i> Logout', [
+                        'class' => 'btn btn-sm btn-danger'
+                    ]) ?>
+                </div>
+            <?php endif; ?>
         </div>
     </header>
     <!-- Main Layout -->

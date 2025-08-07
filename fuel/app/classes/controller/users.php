@@ -1,11 +1,36 @@
 <?php
 
+use Util\AuthUtil;
+
 class Controller_Users extends Controller_Template
 {
 
-    public function action_index()
+    public function before()
     {
-        $users = Model_User::find('all');
+        parent::before();
+
+        if (!\Auth::check()) {
+            \Response::redirect('login/login');
+            exit;
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function action_index(): void
+    {
+        $current_user_group = Auth::get('group');
+
+        if (AuthUtil::isAdmin()) {
+            $users = Model_User::find('all');
+        } else {
+            $users = Model_User::find('all', [
+                'where' => [
+                    ['group', '=', 1]
+                ]
+            ]);
+        }
         $view = View::forge('users/index');
         $view->set('users', $users, false);
 
@@ -16,24 +41,23 @@ class Controller_Users extends Controller_Template
     public function action_create()
     {
         $view = View::forge('users/create');
-        $view->set('errors', array(), false);
+        $view->set('errors', [], false);
 
         if (Input::method() == 'POST') {
-            $val = Validation::forge();
-            $val->add_field('name', 'Name', 'required|max_length[255]');
-            $val->add_field('email', 'Email', 'required|valid_email|max_length[255]');
-            $val->add_field('password', 'Password', 'required|min_length[6]');
+            $val = $this->validate_user(false);
 
             if ($val->run()) {
-                $user = new Model_User();
-                $user->name = Input::post('name');
-                $user->email = Input::post('email');
-                $user->password = password_hash(Input::post('password'), PASSWORD_BCRYPT);
+                try {
+                    \Auth::create_user(
+                        Input::post('username'),
+                        Input::post('password'),
+                        Input::post('email'),
+                        1
+                    );
 
-                if ($user->save()) {
                     return Response::redirect('users/index');
-                } else {
-                    $view->set('errors', array('Could not save user.'), false);
+                } catch (\SimpleUserUpdateException $e) {
+                    $view->set('errors', [$e->getMessage()], false);
                 }
             } else {
                 $view->set('errors', $val->error(), false);
@@ -51,31 +75,36 @@ class Controller_Users extends Controller_Template
             return Response::redirect('users/index');
         }
 
-        $val = Validation::forge();
-        $val->add_field('name', 'Name', 'required|max_length[255]');
-        $val->add_field('email', 'Email', 'required|valid_email|max_length[255]');
-        $val->add_field('password', 'Password', 'min_length[6]');
+        $errors = [];
+        if (Input::method() === 'POST' || Input::method() === 'PUT') {
+            $val = $this->validate_user(true);
+            $input = Input::method() === 'PUT' ? Input::put() : Input::post();
 
-        $input = Input::method() === 'PUT' ? Input::put() : Input::post();
+            if ($val->run($input)) {
+                try {
+                    $updateData = [
+                        'username' => $input['username'],
+                        'email' => $input['email'],
+                    ];
 
-        if ($val->run($input)) {
-            $user->name = $input['name'];
-            $user->email = $input['email'];
-            if (!empty($input['password'])) {
-                $user->password = password_hash($input['password'], PASSWORD_BCRYPT);
-            }
-            if ($user->save()) {
-                return Response::redirect('users/index');
+                    if (!empty($input['password'])) {
+                        $updateData['password'] = $input['password'];
+                    }
+
+                    \Auth::update_user($updateData, $user->username);
+
+                    return Response::redirect('users/index');
+                } catch (\SimpleUserUpdateException $e) {
+                    $errors[] = $e->getMessage();
+                }
             } else {
-                $errors = ['Could not update user.'];
+                $errors = $val->error();
             }
-        } else {
-            $errors = $val->error();
         }
 
         $view = View::forge('users/edit');
         $view->set('user', $user, false);
-        $view->set('errors', isset($errors) ? $errors : [], false);
+        $view->set('errors', $errors, false);
         $this->template->title = 'Edit User';
         $this->template->content = $view;
     }
@@ -87,10 +116,23 @@ class Controller_Users extends Controller_Template
             return Response::forge(json_encode(['error' => 'User not found']), 404);
         }
         $user->delete();
-        if (Input::is_ajax()) {
-            return Response::forge(json_encode(['success' => true, 'message' => 'User deleted']), 200);
-        }
         return Response::redirect('users/index');
+    }
+
+    private function validate_user($isUpdate = false)
+    {
+        $val = Validation::forge();
+
+        $val->add_field('username', 'UserName', 'required|max_length[255]');
+        $val->add_field('email', 'Email', 'required|valid_email|max_length[255]');
+
+        if ($isUpdate) {
+            $val->add_field('password', 'Password', 'min_length[6]');
+        } else {
+            $val->add_field('password', 'Password', 'required|min_length[6]');
+        }
+
+        return $val;
     }
 
 }

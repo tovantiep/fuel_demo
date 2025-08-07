@@ -449,28 +449,27 @@ return array(
      * -------------------------------------------------------------------------
      */
 
-     'always_load' => array(
-    /**
-     * ---------------------------------------------------------------------
-     *  These packages are loaded on Fuel's startup.
-     *  You can specify them in the following manner:
-     *
-     *      'packages' => array('auth');
-     *
-     *  This will assume the packages are in PKGPATH.
-     *
-     *  Use this format to specify the path to the package explicitly.
-     *
-     *      'packages' => array(
-     *          array('auth' => PKGPATH.'auth/')
-     *      );
-     * ---------------------------------------------------------------------
-     */
-
-     'packages' => array(
-     'orm',
-     ),
-     ),
+    'always_load' => array(
+        /**
+         * ---------------------------------------------------------------------
+         *  These packages are loaded on Fuel's startup.
+         *  You can specify them in the following manner:
+         *
+         * 'packages' = > array('auth');
+         *
+         *  This will assume the packages are in PKGPATH.
+         *
+         *  Use this format to specify the path to the package explicitly.
+         *
+         *      'packages' => array(
+         *          array('auth' => PKGPATH.'auth/')
+         *      );
+         * ---------------------------------------------------------------------
+         */
+        'packages' => array(
+            'orm', 'auth',  'email',
+        ),
+    ),
 
     /**
      * ---------------------------------------------------------------------
