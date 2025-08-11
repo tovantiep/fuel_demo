@@ -5,10 +5,6 @@ class Job_CrawlPost
 
     public function fire($job, $data)
     {
-        echo 123123;
-        // Test dừng ở đây để xem job có chạy không
-        // exit;
-        die();
         $crawler = new Service_Crawler();
         $posts = $crawler->crawl();
 

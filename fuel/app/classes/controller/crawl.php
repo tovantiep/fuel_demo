@@ -3,11 +3,21 @@ class Controller_Crawl extends Controller
 {
     public function action_crawl_dantri()
     {
+        $crawler = new Service_Crawler();
+        $posts = $crawler->crawl();
 
-        \JobQueue\Queue::push('CrawlPost',[]);
+        foreach ($posts as $post) {
+            $exists = Model_Post::find('first', [
+                'where' => ['post_id' => $post['post_id']]
+            ]);
 
+            if (!$exists) {
+                Model_Post::forge($post)->save();
+            }
+        }
 
-        return Response::forge('Đã gửi job CrawlDantri vào queue.');
+        echo count($posts) . " bài viết được xử lý.\n";
+
     }
 
 }

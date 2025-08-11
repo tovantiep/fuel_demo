@@ -154,7 +154,7 @@ return array(
      *  PHP set_locale() setting. Use null to not set.
      */
 
-    'locale' => 'en_US.utf8',
+    'locale' => 'en_US.UTF-8',
 
     /**
      * -------------------------------------------------------------------------

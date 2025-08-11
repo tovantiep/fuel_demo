@@ -27,22 +27,29 @@ class Service_Crawler
 
         $articles = [];
 
-        $crawler->filter('div.article-list.article-newest article.article-item')->each(function ($node) use (&$articles) {
-            $dataId = $node->attr('data-id');
-            $contentLink = $node->attr('data-content-target');
-            $title = $node->filter('h2.article-title a')->text('');
-            $description = $node->filter('.article-excerpt a')->text('');
-            $link = $node->filter('h2.article-title a')->attr('href');
+        $crawler->filter('div.article.list.article-newest article.article-item')->each(function (Crawler $node) use (&$articles) {
+            $dataId       = $node->attr('data-id');
+            $contentLink  = $node->attr('data-content-target');
+
+            $titleNode    = $node->filter('h2.article-title a, h3.article-title a');
+            $title        = $titleNode->count() ? $titleNode->text() : '';
+
+            $descNode     = $node->filter('.article-excerpt a');
+            $description  = $descNode->count() ? $descNode->text() : '';
+
+            $link         = $titleNode->count() ? $titleNode->attr('href') : '';
+
+            $imgNode      = $node->filter('.article-thumb img');
+            $image        = $imgNode->count() ? $imgNode->attr('src') : '';
 
             $articles[] = [
-                'data_id' => $dataId,
-                'title' => html_entity_decode(trim($title)),
-                'description' => html_entity_decode(trim($description)),
-                'image_link' => str_starts_with($contentLink, 'http') ? $link : 'https://dantri.com.vn' . $link,
-                'content_link' => str_starts_with($contentLink, 'http') ? $contentLink : 'https://dantri.com.vn' . $contentLink,
+                'post_id'       => $dataId,
+                'title'         => html_entity_decode(trim($title)),
+                'description'   => html_entity_decode(trim($description)),
+                'image_link'    => str_starts_with($image, 'http') ? $image : 'https://dantri.com.vn' . $image,
+                'content_link'  => str_starts_with($link, 'http') ? $link : 'https://dantri.com.vn' . $link,
             ];
         });
-
         return $articles;
     }
 }
