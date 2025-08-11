@@ -14,7 +14,12 @@
         "fuel/orm": "dev-1.9/develop",
         "fuel/parser": "dev-1.9/develop",
         "fuelphp/upload": "2.0.6",
-        "phpmailer/phpmailer": "*"
+        "phpmailer/phpmailer": "*",
+        "hosopy/fuel-jobqueue": "dev-master",
+        "pda/pheanstalk": "^2.1",
+        "guzzlehttp/guzzle": "^7.9",
+        "symfony/dom-crawler": "^7.3",
+        "symfony/css-selector": "^7.3"
     },
     "require-dev": {
         "fuel/docs": "dev-1.9/develop"

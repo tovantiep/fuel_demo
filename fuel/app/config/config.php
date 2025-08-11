@@ -154,7 +154,7 @@ return array(
      *  PHP set_locale() setting. Use null to not set.
      */
 
-    'locale' => 'en_US.UTF-8',
+    'locale' => 'en_US.utf8',
 
     /**
      * -------------------------------------------------------------------------
@@ -467,7 +467,7 @@ return array(
          * ---------------------------------------------------------------------
          */
         'packages' => array(
-            'orm', 'auth',  'email',
+            'orm', 'auth',  'email', 'fuel-jobqueue'
         ),
     ),
 

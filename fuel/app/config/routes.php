@@ -50,4 +50,8 @@ return array(
     'logout' => 'login/logout',
     'profile' => 'login/profile',
     'change_password' => 'login/change_password',
+
+
+    'crawl' => 'crawl/crawl_dantri',
+
 );

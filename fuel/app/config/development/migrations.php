@@ -5,6 +5,8 @@ return array (
       'default' => array(      
         0 => '001_create_users',
         1 => '002_create_admin_seed',
+        2 => '003_create_posts',
+        3 => '004_create_categories',
       ),
     ),
     'module' => array(    

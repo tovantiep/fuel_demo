@@ -20,23 +20,41 @@ class Controller_Users extends Controller_Template
      */
     public function action_index(): void
     {
-        $current_user_group = Auth::get('group');
+        $query = \Model_User::query();
 
-        if (AuthUtil::isAdmin()) {
-            $users = Model_User::find('all');
-        } else {
-            $users = Model_User::find('all', [
-                'where' => [
-                    ['group', '=', 1]
-                ]
-            ]);
+        if (!\Util\AuthUtil::isAdmin()) {
+            $query->where('group', '=', 1);
         }
+
+        $total = $query->count();
+
+        $per_page = (int) \Input::get('per_page', 10);
+        if (!in_array($per_page, [10, 20, 50])) {
+            $per_page = 10;
+        }
+        $current_page = (int) \Input::get('page', 1);
+
+        $pagination = \Pagination::forge('user_pagination', [
+            'pagination_url' => \Uri::create('users/index') . '?per_page=' . $per_page,
+            'total_items'    => $total,
+            'per_page'       => $per_page,
+            'current_page'   => $current_page,
+        ]);
+
+        $users = $query
+            ->rows_offset($pagination->offset)
+            ->rows_limit($pagination->per_page)
+            ->get();
+
         $view = View::forge('users/index');
         $view->set('users', $users, false);
+        $view->set('pagination', $pagination->render(), false);
+        $view->set('per_page', $per_page, false);
 
         $this->template->title = 'Users';
         $this->template->content = $view;
     }
+
 
     public function action_create()
     {

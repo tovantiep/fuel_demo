@@ -1,0 +1,48 @@
+<?php
+
+use GuzzleHttp\Client;
+use Symfony\Component\DomCrawler\Crawler;
+
+class Service_Crawler
+{
+    protected $client;
+
+    public function __construct()
+    {
+        $this->client = new Client([
+            'timeout' => 10,
+            'headers' => [
+                'User-Agent' => 'Mozilla/5.0 (FuelPHP Bot)'
+            ],
+        ]);
+    }
+
+    public function crawl()
+    {
+        $url = 'https://dantri.com.vn/tin-moi-nhat.htm';
+        $response = $this->client->get($url);
+        $html = (string) $response->getBody();
+
+        $crawler = new Crawler($html);
+
+        $articles = [];
+
+        $crawler->filter('div.article-list.article-newest article.article-item')->each(function ($node) use (&$articles) {
+            $dataId = $node->attr('data-id');
+            $contentLink = $node->attr('data-content-target');
+            $title = $node->filter('h2.article-title a')->text('');
+            $description = $node->filter('.article-excerpt a')->text('');
+            $link = $node->filter('h2.article-title a')->attr('href');
+
+            $articles[] = [
+                'data_id' => $dataId,
+                'title' => html_entity_decode(trim($title)),
+                'description' => html_entity_decode(trim($description)),
+                'image_link' => str_starts_with($contentLink, 'http') ? $link : 'https://dantri.com.vn' . $link,
+                'content_link' => str_starts_with($contentLink, 'http') ? $contentLink : 'https://dantri.com.vn' . $contentLink,
+            ];
+        });
+
+        return $articles;
+    }
+}
