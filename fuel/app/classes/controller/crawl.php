@@ -5,6 +5,7 @@ class Controller_Crawl extends Controller
     {
         $crawler = new Service_Crawler();
         $posts = $crawler->crawl();
+        $newCount = 0;
 
         foreach ($posts as $post) {
             $exists = Model_Post::find('first', [
@@ -12,11 +13,13 @@ class Controller_Crawl extends Controller
             ]);
 
             if (!$exists) {
-                Model_Post::forge($post)->save();
+                if (Model_Post::forge($post)->save()) {
+                    $newCount++;
+                }
             }
         }
 
-        echo count($posts) . " bài viết được xử lý.\n";
+        echo $newCount . " bài viết mới được lưu.\n";
 
     }
 
