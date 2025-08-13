@@ -25,8 +25,7 @@ class Controller_Welcome extends Controller
     {
         $query = \Model_Post::query()
             ->related('category')
-            ->order_by('id', 'desc')
-            ->limit(20);
+            ->order_by('id', 'desc');
 
         $category_id = \Input::get('category_id', null);
         $current_category = null;

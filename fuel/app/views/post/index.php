@@ -73,7 +73,15 @@
                                             'class' => 'btn btn-sm btn-outline-secondary me-1',
                                             'title' => 'Update'
                                         ]) ?>
-                                        <?= Html::anchor('post/delete/' . $post->id, '<i class="bi bi-trash"></i>', [
+                                        <?php
+                                        $currentQuery = $_SERVER['QUERY_STRING'];
+                                        $deleteUrl = 'post/delete/' . $post->id;
+                                        if (!empty($currentQuery)) {
+                                            $deleteUrl .= '?' . $currentQuery;
+                                        }
+                                        ?>
+
+                                        <?= Html::anchor($deleteUrl, '<i class="bi bi-trash"></i>', [
                                             'class' => 'btn btn-sm btn-outline-danger',
                                             'title' => 'Delete',
                                             'onclick' => "return confirm('Are you sure you want to delete this post?');"

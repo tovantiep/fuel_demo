@@ -13,6 +13,10 @@ class Add_default_category_to_categories
                 [2, 'Kinh doanh'],
                 [3, 'Xã hội'],
                 [4, 'Thể thao'],
+                [5, 'Sức khỏe'],
+                [6, 'Công nghệ'],
+                [7, 'Giáo dục'],
+                [8, 'Pháp luật']
             ])
             ->execute();
     }

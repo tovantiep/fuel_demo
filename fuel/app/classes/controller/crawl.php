@@ -10,7 +10,7 @@ class Controller_Crawl extends Controller
         $categoryId = (int) Input::get('category_id', 1);
 
 
-        $allowedCategories = [1, 2, 3, 4];
+        $allowedCategories = [1, 2, 3, 4, 5, 6, 7, 8];
         if (!in_array($categoryId, $allowedCategories, true)) {
             return json_encode([
                 'success' => false,

@@ -23,6 +23,10 @@ class Service_Crawler
             2 => 'https://dantri.com.vn/kinh-doanh.htm',
             3 => 'https://dantri.com.vn/xa-hoi.htm',
             4 => 'https://dantri.com.vn/the-thao.htm',
+            5 => 'https://dantri.com.vn/suc-khoe.htm',
+            6 => 'https://dantri.com.vn/cong-nghe.htm',
+            7 => 'https://dantri.com.vn/giao-duc.htm',
+            8 => 'https://dantri.com.vn/phap-luat.htm',
             default => 'https://dantri.com.vn/tin-moi-nhat.htm',
         };
 
@@ -35,7 +39,7 @@ class Service_Crawler
             return $this->parseArticlesCategory1($crawler);
         }
 
-        return $this->parseArticlesCategory234($crawler, $categoryId);
+        return $this->parseArticlesCategory($crawler, $categoryId);
 
     }
 
@@ -56,7 +60,7 @@ class Service_Crawler
         return $articles;
     }
 
-    protected function parseArticlesCategory234(Crawler $crawler, int $categoryId): array
+    protected function parseArticlesCategory(Crawler $crawler, int $categoryId): array
     {
         $articles = [];
         $crawler->filter('div.article.list article.article-item')->each(function (Crawler $node) use (&$articles, $categoryId) {

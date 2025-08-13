@@ -210,7 +210,14 @@ class Controller_Post extends Controller_Template
             return Response::forge(json_encode(['error' => 'Post not found']), 404);
         }
         $post->delete();
-        return Response::redirect('post/index');
+        $queryParams = \Input::get();
+
+        $redirectUrl = 'post/index';
+        if (!empty($queryParams)) {
+            $redirectUrl .= '?' . http_build_query($queryParams);
+        }
+
+        return Response::redirect($redirectUrl);
     }
 
     private function validate_post()
