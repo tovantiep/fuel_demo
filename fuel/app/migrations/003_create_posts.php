@@ -6,7 +6,7 @@ class Create_posts
 {
 	public function up()
 	{
-		\DBUtil::create_table('posts', array(
+		\DBUtil::create_table('post', array(
             'id' => array('type' => 'int', 'unsigned' => true, 'null' => false, 'auto_increment' => true, 'constraint' => '11'),
             'category_id' => array('type' => 'int','null' => true, 'constraint' => '11'),
             'title' => array('constraint' => '255', 'null' => false, 'type' => 'varchar'),
@@ -21,6 +21,6 @@ class Create_posts
 
 	public function down()
 	{
-		\DBUtil::drop_table('posts');
+		\DBUtil::drop_table('post');
 	}
 }

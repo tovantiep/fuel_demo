@@ -21,16 +21,33 @@
  */
 class Controller_Welcome extends Controller
 {
-	/**
-	 * The basic welcome message
-	 *
-	 * @access  public
-	 * @return  Response
-	 */
-	public function action_index()
-	{
-		return Response::forge(View::forge('welcome/index'));
-	}
+    /**
+     * @return mixed
+     */
+    public function action_index(): mixed
+    {
+        $query = \Model_Post::query()
+            ->related('category')
+            ->order_by('id', 'desc')
+            ->limit(20);
+
+        $category_id = \Input::get('category_id', null);
+
+        if (!empty($category_id)) {
+            $query->where('category_id', '=', (int)$category_id);
+        }
+
+        $posts = $query->get();
+
+        $categories = Model_Category::find('all');
+
+        return Response::forge(
+            View::forge('welcome/index', [
+                'posts' => $posts,
+                'categories' => $categories
+            ])
+        );
+    }
 
 	/**
 	 * A typical "Hello, Bob!" type example.  This uses a Presenter to

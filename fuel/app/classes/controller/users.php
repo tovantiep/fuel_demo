@@ -28,17 +28,17 @@ class Controller_Users extends Controller_Template
 
         $total = $query->count();
 
-        $per_page = (int) \Input::get('per_page', 10);
+        $per_page = (int)\Input::get('per_page', 10);
         if (!in_array($per_page, [10, 20, 50])) {
             $per_page = 10;
         }
-        $current_page = (int) \Input::get('page', 1);
+        $current_page = (int)\Input::get('page', 1);
 
         $pagination = \Pagination::forge('user_pagination', [
             'pagination_url' => \Uri::create('users/index') . '?per_page=' . $per_page,
-            'total_items'    => $total,
-            'per_page'       => $per_page,
-            'current_page'   => $current_page,
+            'total_items' => $total,
+            'per_page' => $per_page,
+            'current_page' => $current_page,
         ]);
 
         $users = $query
@@ -58,6 +58,9 @@ class Controller_Users extends Controller_Template
 
     public function action_create()
     {
+        if (!\Util\AuthUtil::isAdmin()) {
+            return Response::forge('Forbidden', 403);
+        }
         $view = View::forge('users/create');
         $view->set('errors', [], false);
 
@@ -88,6 +91,9 @@ class Controller_Users extends Controller_Template
 
     public function action_update($id = null)
     {
+        if (!\Util\AuthUtil::isAdmin()) {
+            return Response::forge('Forbidden', 403);
+        }
         $user = Model_User::find($id);
         if (!$user) {
             return Response::redirect('users/index');
@@ -129,6 +135,10 @@ class Controller_Users extends Controller_Template
 
     public function action_delete($id = null)
     {
+        if (!\Util\AuthUtil::isAdmin()) {
+            return Response::forge('Forbidden', 403);
+        }
+
         $user = Model_User::find($id);
         if (!$user) {
             return Response::forge(json_encode(['error' => 'User not found']), 404);

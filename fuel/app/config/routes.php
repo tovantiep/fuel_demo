@@ -51,7 +51,15 @@ return array(
     'profile' => 'login/profile',
     'change_password' => 'login/change_password',
 
+    'post/create'        => array('post/create'),
+    'post/index'         => array('post/index'),
+    'post/update/(:num)' => 'post/update/$1',
+    'post/delete/(:num)' => 'post/delete/$1',
+
+    'category/create'        => array('category/create'),
+    'category/index'         => array('category/index'),
+    'category/update/(:num)' => 'category/update/$1',
+    'category/delete/(:num)' => 'category/delete/$1',
 
     'crawl' => 'crawl/crawl_dantri',
-
 );

@@ -7,6 +7,7 @@ return array (
         1 => '002_create_admin_seed',
         2 => '003_create_posts',
         3 => '004_create_categories',
+        4 => '005_add_default_category_to_categories',
       ),
     ),
     'module' => array(    

@@ -39,7 +39,7 @@ class Model_Category extends Model
     );
 
     protected static $_has_many = array(
-        'posts' => array(
+        'post' => array(
             'key_from' => 'id',
             'model_to' => 'Model_Post',
             'key_to' => 'category_id',

@@ -85,7 +85,7 @@ class Controller_Login extends Controller
         if ($checkLogin) {
             $this->handleRememberMe(\Input::param('remember', false));
 
-            \Response::redirect_back('users/index');
+            \Response::redirect('users/index');
         } else {
             $this->handleFailedLoginResponse();
         }
