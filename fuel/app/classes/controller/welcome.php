@@ -21,10 +21,7 @@
  */
 class Controller_Welcome extends Controller
 {
-    /**
-     * @return mixed
-     */
-    public function action_index(): mixed
+    public function action_index()
     {
         $query = \Model_Post::query()
             ->related('category')
@@ -32,19 +29,21 @@ class Controller_Welcome extends Controller
             ->limit(20);
 
         $category_id = \Input::get('category_id', null);
+        $current_category = null;
 
         if (!empty($category_id)) {
             $query->where('category_id', '=', (int)$category_id);
+            $current_category = \Model_Category::find((int)$category_id);
         }
 
         $posts = $query->get();
-
         $categories = Model_Category::find('all');
 
         return Response::forge(
             View::forge('welcome/index', [
                 'posts' => $posts,
-                'categories' => $categories
+                'categories' => $categories,
+                'current_category' => $current_category
             ])
         );
     }

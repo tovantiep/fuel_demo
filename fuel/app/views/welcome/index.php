@@ -67,7 +67,7 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg">
     <div class="container">
-        <a class="navbar-brand fw-bold text-success" href="<?= Uri::create('post/index') ?>">DÂN TRÍ</a>
+        <a class="navbar-brand fw-bold text-success" href="<?= Uri::create('') ?>">DÂN TRÍ</a>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav me-auto">
                 <?php foreach ($categories as $category): ?>
@@ -85,6 +85,9 @@
 
 <!-- Content -->
 <div class="container">
+    <div class="section-title">
+        <?= !empty($current_category) ? e($current_category->name) : 'Báo Dân Trí' ?>
+    </div>
 
     <?php if (!empty($posts)): ?>
         <?php foreach ($posts as $post): ?>
