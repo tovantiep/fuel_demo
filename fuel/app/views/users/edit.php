@@ -76,7 +76,8 @@
                             <label for="username" class="form-label">UserName</label>
                             <input type="text" class="form-control" id="username" name="username"
                                    value="<?= e(isset($input['username']) ? $input['username'] : (isset($user) ? $user->username : '')) ?>"
-                                   required>
+                                   required
+                                   readonly>
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>

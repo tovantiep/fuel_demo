@@ -120,7 +120,7 @@ class Controller_Category extends Controller_Template
             return Response::forge('Forbidden', 403);
         }
         if (in_array($id, [1,2,3,4,5,6,7,8])) {
-            return Response::forge('Forbidden', 403);
+            return Response::forge(json_encode(['error' => 'Không thể xóa category mặc định']), 403);
         }
         $category = Model_Category::find($id);
         if (!$category) {

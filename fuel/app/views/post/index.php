@@ -38,12 +38,14 @@
                         <i class="bi bi-search"></i> Search
                     </button>
                 </div>
-                <div class="col-auto">
-                    <?= Html::anchor('#', '<i></i> Crawl Post', [
-                        'class' => 'btn btn-secondary',
-                        'id' => 'btnCrawlPost'
-                    ]) ?>
-                </div>
+                <?php if (\Util\AuthUtil::isAdmin()): ?>
+                    <div class="col-auto">
+                        <?= Html::anchor('#', '<i></i> Crawl Post', [
+                            'class' => 'btn btn-secondary',
+                            'id' => 'btnCrawlPost'
+                        ]) ?>
+                    </div>
+                <?php endif; ?>
             </form>
 
             <div class="table-responsive">

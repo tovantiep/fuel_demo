@@ -31,7 +31,7 @@ class Service_Crawler
         };
 
         $response = $this->client->get($url);
-        $html = (string) $response->getBody();
+        $html = (string)$response->getBody();
 
         $crawler = new Crawler($html);
 
@@ -49,12 +49,12 @@ class Service_Crawler
         $articles = [];
         $crawler->filter('div.article.list.article-newest article.article-item')->each(function (Crawler $node) use (&$articles) {
             $articles[] = [
-                'category_id'   => 1,
-                'post_id'       => $node->attr('data-id'),
-                'title'         => $this->getTextFromNode($node, 'h2.article-title a, h3.article-title a'),
-                'description'   => $this->getTextFromNode($node, '.article-excerpt a'),
-                'image_link'    => $this->getImageSrc($node, '.article-thumb img'),
-                'content_link'  => $this->getHrefFromNode($node, 'h2.article-title a, h3.article-title a'),
+                'category_id' => 1,
+                'post_id' => $node->attr('data-id'),
+                'title' => $this->getTextFromNode($node, 'h2.article-title a, h3.article-title a'),
+                'description' => $this->getTextFromNode($node, '.article-excerpt a'),
+                'image_link' => $this->getImageSrc($node, '.article-thumb img'),
+                'content_link' => $this->getHrefFromNode($node, 'h2.article-title a, h3.article-title a'),
             ];
         });
         return $articles;
@@ -65,7 +65,7 @@ class Service_Crawler
         $articles = [];
         $crawler->filter('div.article.list article.article-item')->each(function (Crawler $node) use (&$articles, $categoryId) {
 
-            $postId = $description = $imageLink =  '';
+            $postId = $description = $imageLink = '';
             $commentSpan = $node->filter('span.article-total-comment');
             if ($commentSpan->count()) {
                 $postId = $commentSpan->attr('data-id') ?? '';
@@ -86,12 +86,12 @@ class Service_Crawler
 
 
             $articles[] = [
-                'category_id'   => $categoryId,
-                'post_id'       => $postId,
-                'title'         => $this->getTextFromNode($node, 'h3.article-title a'),
-                'description'   => $description,
-                'image_link'    => $imageLink,
-                'content_link'  => $this->getHrefFromNode($node, 'h3.article-title a'),
+                'category_id' => $categoryId,
+                'post_id' => $postId,
+                'title' => $this->getTextFromNode($node, 'h3.article-title a'),
+                'description' => $description,
+                'image_link' => $imageLink,
+                'content_link' => $this->getHrefFromNode($node, 'h3.article-title a'),
             ];
         });
         return $articles;
