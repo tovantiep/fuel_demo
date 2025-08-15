@@ -102,6 +102,12 @@
             opacity: 1;
             position: relative;
         }
+        .news-desc {
+            font-size: 18px;
+            font-style: italic;
+            color: #555;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
@@ -134,33 +140,56 @@
 <!-- Content -->
 <div class="container">
     <div class="section-title">
-        <?= !empty($current_category) ? e($current_category->name) : 'Báo Dân Trí' ?>
+        <?= e($post->title) ?>
+    </div>
+    <div class="news-time">
+        <?php
+        $date = new DateTime('@' . $post->created_at);
+        $date->modify('+7 hours');
+        echo $date->format('H:i d/m/Y');
+        ?>
+    </div>
+    <div class="news-desc"><?= e($post->description) ?></div>
+
+    <div class="news-content mt-3">
+        <?php
+        $html = $post->summary ?? '';
+
+        $html = preg_replace_callback('/<img[^>]*>/i', function ($matches) {
+            $tag = $matches[0];
+            $title = '';
+
+            if (preg_match('/title="([^"]*)"/i', $tag, $m)) {
+                $title = $m[1];
+            }
+
+            if (preg_match('/data-original="([^"]+)"/i', $tag, $m)) {
+                $src = $m[1];
+            } elseif (preg_match('/data-src="([^"]+)"/i', $tag, $m)) {
+                $src = $m[1];
+            } elseif (preg_match('/src="([^"]+)"/i', $tag, $m)) {
+                $src = $m[1];
+            } else {
+                $src = '';
+            }
+
+            return '<img'
+                . ($title ? ' title="' . htmlspecialchars($title) . '"' : '')
+                . ' src="' . htmlspecialchars($src) . '" style="max-width:100%;height:auto;">';
+        }, $html);
+
+        $html = preg_replace('/<br\s*\/?>/i', "\n", $html);
+        $html = preg_replace('/<\/p>\s*<p>/i', "\n\n", $html);
+
+        // Loại bỏ tag HTML khác ngoài img
+        $html = strip_tags($html, '<img>');
+        $html = html_entity_decode($html, ENT_QUOTES, 'UTF-8');
+        $html = trim($html);
+
+        echo nl2br($html);
+        ?>
     </div>
 
-    <?php if (!empty($posts)): ?>
-        <?php foreach ($posts as $post): ?>
-            <div class="news-item">
-                <div class="news-content">
-                    <?php
-                    $date = new DateTime('@' . $post->created_at);
-                    $date->modify('+7 hours');
-                    ?>
-                    <div class="news-time">
-                        <?= $date->format('H:i d/m/Y') ?>
-                    </div>
-                    <a href="<?= e($post->content_link) ?>" class="news-title" target="_blank"><?= e($post->title) ?></a>
-                    <div class="news-desc"><?= e($post->description) ?></div>
-                </div>
-                <?php if (!empty($post->image_link)): ?>
-                    <div class="news-thumb">
-                        <img src="<?= e($post->image_link) ?>" alt="<?= e($post->title) ?>">
-                    </div>
-                <?php endif; ?>
-            </div>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <p>Không có bài viết nào. Hãy sang Dân Trí trộm bài =)))</p>
-    <?php endif; ?>
 </div>
 <!-- Footer -->
 <footer class="bg-white border-top mt-4 pt-4 pb-4">

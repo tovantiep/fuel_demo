@@ -119,6 +119,9 @@ class Controller_Category extends Controller_Template
         if (!\Util\AuthUtil::isAdmin()) {
             return Response::forge('Forbidden', 403);
         }
+        if (in_array($id, [1,2,3,4,5,6,7,8])) {
+            return Response::forge('Forbidden', 403);
+        }
         $category = Model_Category::find($id);
         if (!$category) {
             return Response::forge(json_encode(['error' => 'Category not found']), 404);

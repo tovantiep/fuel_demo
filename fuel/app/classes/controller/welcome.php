@@ -47,6 +47,28 @@ class Controller_Welcome extends Controller
         );
     }
 
+    public function action_detail($id = null)
+    {
+        if ($id === null) {
+            return Response::forge('Post ID is required', 400);
+        }
+        $categories = Model_Category::find('all');
+        $post = \Model_Post::find($id, [
+            'related' => ['category']
+        ]);
+
+        if (!$post) {
+            return Response::forge('Post not found', 404);
+        }
+
+        return Response::forge(
+            View::forge('welcome/detail', [
+                'post' => $post,
+                'categories' => $categories,
+            ])
+        );
+    }
+
 	/**
 	 * A typical "Hello, Bob!" type example.  This uses a Presenter to
 	 * show how to use them.

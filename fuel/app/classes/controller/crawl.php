@@ -41,4 +41,38 @@ class Controller_Crawl extends Controller
 
     }
 
+    public function action_crawl_summary()
+    {
+        if (!\Util\AuthUtil::isAdmin()) {
+            return Response::forge('Forbidden', 403);
+        }
+
+        $postsEmpty = \Model_Post::query()
+            ->where('summary', '=', '')
+            ->or_where('summary', 'is', null)
+            ->limit(12)
+            ->get();
+
+        $crawler = new Service_Crawlsummary();
+        $countUpdated = 0;
+
+        foreach ($postsEmpty as $post) {
+            $crawled = $crawler->crawl($post->content_link);
+
+            if (!empty($crawled[0]['content_html'])) {
+                $post->summary = $crawled[0]['content_html'];
+                $post->save();
+                $countUpdated++;
+            }
+            sleep(2);
+        }
+
+        return json_encode([
+            'success' => true,
+            'message' => "{$countUpdated} bài viết đã được crawl và lưu."
+        ]);
+
+    }
+
+
 }

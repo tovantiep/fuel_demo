@@ -66,26 +66,29 @@
                                 <td><?= e($post->id) ?></td>
                                 <td><?= e($post->category ? $post->category->name : ' ') ?></td>
                                 <td><?= e($post->title) ?></td>
-                                <td><?= e($post->description) ?></td>
+                                <td class="description"><?= e($post->description) ?></td>
                                 <?php if (\Util\AuthUtil::isAdmin()): ?>
                                     <td>
-                                        <?= Html::anchor('post/update/' . $post->id, '<i class="bi bi-pencil-square"></i>', [
-                                            'class' => 'btn btn-sm btn-outline-secondary me-1',
-                                            'title' => 'Update'
-                                        ]) ?>
-                                        <?php
-                                        $currentQuery = $_SERVER['QUERY_STRING'];
-                                        $deleteUrl = 'post/delete/' . $post->id;
-                                        if (!empty($currentQuery)) {
-                                            $deleteUrl .= '?' . $currentQuery;
-                                        }
-                                        ?>
+                                        <div class="d-inline-flex gap-1" role="group">
+                                            <?= Html::anchor('post/update/' . $post->id, '<i class="bi bi-pencil-square"></i>', [
+                                                'class' => 'btn btn-sm btn-outline-secondary',
+                                                'title' => 'Update'
+                                            ]) ?>
 
-                                        <?= Html::anchor($deleteUrl, '<i class="bi bi-trash"></i>', [
-                                            'class' => 'btn btn-sm btn-outline-danger',
-                                            'title' => 'Delete',
-                                            'onclick' => "return confirm('Are you sure you want to delete this post?');"
-                                        ]) ?>
+                                            <?php
+                                            $currentQuery = $_SERVER['QUERY_STRING'];
+                                            $deleteUrl = 'post/delete/' . $post->id;
+                                            if (!empty($currentQuery)) {
+                                                $deleteUrl .= '?' . $currentQuery;
+                                            }
+                                            ?>
+
+                                            <?= Html::anchor($deleteUrl, '<i class="bi bi-trash"></i>', [
+                                                'class' => 'btn btn-sm btn-outline-danger',
+                                                'title' => 'Delete',
+                                                'onclick' => "return confirm('Are you sure you want to delete this post?');"
+                                            ]) ?>
+                                        </div>
                                     </td>
                                 <?php endif; ?>
                             </tr>
@@ -151,3 +154,10 @@
             });
     });
 </script>
+<style>
+    .table td.description {
+        max-width: 500px; /* Giới hạn chiều rộng ô */
+        overflow: hidden; /* Ẩn phần tràn ra */
+        text-overflow: ellipsis; /* Hiển thị ... */
+    }
+</style>

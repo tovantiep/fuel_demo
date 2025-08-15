@@ -31,6 +31,10 @@ class Model_Post extends \Orm\Model
             'label' => 'Post ID',
             'data_type' => 'varchar',
         ),
+        'summary' => array(
+            'label' => 'Summary',
+            'data_type' => 'text',
+        ),
         'created_at' => array(
             'label' => 'Created at',
             'data_type' => 'int',

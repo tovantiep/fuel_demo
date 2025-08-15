@@ -19,6 +19,7 @@ return array(
 	 */
 
 	'_root_' => 'welcome/index',
+    'detail/(:num)' => 'welcome/detail/$1',
 
 	/**
 	 * -------------------------------------------------------------------------
@@ -62,4 +63,5 @@ return array(
     'category/delete/(:num)' => 'category/delete/$1',
 
     'crawl' => 'crawl/crawl_dantri',
+    'crawl/summary' => 'crawl/crawl_summary',
 );

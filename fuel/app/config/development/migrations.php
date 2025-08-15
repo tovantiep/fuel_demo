@@ -8,6 +8,7 @@ return array (
         2 => '003_create_posts',
         3 => '004_create_categories',
         4 => '005_add_default_category_to_categories',
+        5 => '006_add_column_summary_to_posts',
       ),
     ),
     'module' => array(    

@@ -34,11 +34,14 @@
                                             'class' => 'btn btn-sm btn-outline-secondary me-1',
                                             'title' => 'Update'
                                         ]) ?>
-                                        <?= Html::anchor('category/delete/' . $category->id, '<i class="bi bi-trash"></i>', [
-                                            'class' => 'btn btn-sm btn-outline-danger',
-                                            'title' => 'Delete',
-                                            'onclick' => "return confirm('Are you sure you want to delete this category?');"
-                                        ]) ?>
+
+                                        <?php if (!in_array($category->id, [1,2,3,4,5,6,7,8])): ?>
+                                            <?= Html::anchor('category/delete/' . $category->id, '<i class="bi bi-trash"></i>', [
+                                                'class' => 'btn btn-sm btn-outline-danger',
+                                                'title' => 'Delete',
+                                                'onclick' => "return confirm('Are you sure you want to delete this category?');"
+                                            ]) ?>
+                                        <?php endif; ?>
                                     </td>
                                 <?php endif; ?>
                             </tr>
