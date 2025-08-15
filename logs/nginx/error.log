@@ -1980,3 +1980,4 @@
 2025/08/13 01:30:44 [notice] 1#1: start worker process 47
 2025/08/13 01:30:44 [notice] 1#1: start worker process 48
 2025/08/13 01:30:44 [notice] 1#1: start worker process 49
+2025/08/14 01:34:43 [warn] 33#33: *344 a client request body is buffered to a temporary file /var/cache/nginx/client_temp/0000000001, client: 172.19.0.1, server: localhost, request: "POST /post/create HTTP/1.1", host: "localhost:8695", referrer: "http://localhost:8695/post/create"

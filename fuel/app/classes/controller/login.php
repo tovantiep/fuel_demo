@@ -33,7 +33,7 @@ class Controller_Login extends Controller
         \Auth::dont_remember_me();
         \Auth::logout();
 
-        \Response::redirect('login');;
+        \Response::redirect('login');
     }
 
     public function post_change_password()

@@ -84,7 +84,7 @@ class Controller_Register extends Controller
                         $email_body
                     );
 
-                    \Response::redirect_back('login/login');
+                    \Response::redirect('login');
                 } catch (\Exception $exception) {
                     echo $exception->getMessage();
                 }
