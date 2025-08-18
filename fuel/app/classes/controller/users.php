@@ -151,14 +151,9 @@ class Controller_Users extends Controller_Template
     {
         $val = Validation::forge();
 
-        $val->add_field('username', 'UserName', 'required|max_length[255]');
-        $val->add_field('email', 'Email', 'required|valid_email|max_length[255]');
-
-        if ($isUpdate) {
-            $val->add_field('password', 'Password', 'min_length[6]');
-        } else {
-            $val->add_field('password', 'Password', 'required|min_length[6]');
-        }
+        $val->add_field('username', 'UserName', 'required|trim|xss_clean|max_length[255]');
+        $val->add_field('email', 'Email', 'required|trim|xss_clean|valid_email|max_length[255]');
+        $val->add_field('password', 'Password', ($isUpdate ? '' : 'required|') . 'trim|xss_clean|min_length[6]');
 
         return $val;
     }

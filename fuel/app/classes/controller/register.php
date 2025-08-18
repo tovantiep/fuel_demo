@@ -100,8 +100,8 @@ class Controller_Register extends Controller
 
         $vali = Validation::forge();
 
-        $vali->add_field('username', 'Your username', 'required');
-        $vali->add_field('email', 'Email', 'required');
+        $vali->add_field('username', 'Your username', 'required|valid_string[alpha,numeric,dashes]');
+        $vali->add_field('email', 'Email', 'required|valid_email');
         $vali->add_field('password', 'Your password', 'required|min_length[3]|max_length[10]');
         $vali->add_field('confirmed_password', 'Confirmed password', 'required|match_field[password]');
 

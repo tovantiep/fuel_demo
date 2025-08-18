@@ -2,7 +2,7 @@
 
 use Util\AuthUtil;
 
-class Controller_Post extends Controller_Template
+class Controller_Post extends \Fuel\Core\Controller_Hybrid
 {
     public function before()
     {
@@ -14,18 +14,18 @@ class Controller_Post extends Controller_Template
         }
     }
 
-    public function action_index(): void
+    public function action_index()
     {
         $query = \Model_Post::query()->related('category');
-        $categories = Model_Category::find('all');
+        $categories = \Model_Category::find('all');
 
-        $keyword = \Input::get('keyword', null);
-        $category_id = \Input::get('category_id', null);
+        $keyword = \Input::get('keyword');
+        $category_id = \Input::get('category_id');
 
         if (!empty($keyword)) {
             $query->where_open()
-                ->where('title', 'like', '%' . $keyword . '%')
-                ->or_where('description', 'like', '%' . $keyword . '%')
+                ->where('title', 'like', '%' . $keyword)
+                ->or_where('description', 'like', '%' . $keyword)
                 ->where_close();
         }
 
@@ -44,12 +44,12 @@ class Controller_Post extends Controller_Template
 
         $pagination = \Pagination::forge('post_pagination', [
             'pagination_url' => \Uri::create('post/index') . '?per_page=' . $per_page,
-            'total_items' => $total,
-            'per_page' => $per_page,
-            'current_page' => $current_page,
-            'uri_segment' => 'page',
-            'show_first' => true,
-            'show_last' => true,
+            'total_items'   => $total,
+            'per_page'      => $per_page,
+            'current_page'  => $current_page,
+            'uri_segment'   => 'page',
+            'show_first'    => true,
+            'show_last'     => true,
         ]);
 
         $posts = $query
@@ -58,17 +58,24 @@ class Controller_Post extends Controller_Template
             ->order_by('id', 'desc')
             ->get();
 
+        if (\Input::is_ajax()) {
+            $partial = \View::forge('post/_list');
+            $partial->set('posts', $posts, false);
+            $partial->set('pagination', $pagination->render(), false);
+            return $partial;
+        }
+
         $view = \View::forge('post/index');
         $view->set('posts', $posts, false);
         $view->set('categories', $categories, false);
         $view->set('pagination', $pagination->render(), false);
         $view->set('per_page', $per_page, false);
         $view->set('filters', [
-            'keyword' => $keyword,
+            'keyword'     => $keyword,
             'category_id' => $category_id,
         ], false);
 
-        $this->template->title = 'Posts';
+        $this->template->title   = 'Posts';
         $this->template->content = $view;
     }
 
@@ -111,6 +118,7 @@ class Controller_Post extends Controller_Template
                     'description' => \Input::post('description'),
                     'category_id' => \Input::post('category_id'),
                     'image_link' => $imagePath,
+                    'summary' => \Input::post('summary'),
                     'post_id' => time()
                 ]);
 
@@ -179,6 +187,7 @@ class Controller_Post extends Controller_Template
                 $post->title = $input['title'];
                 $post->description = $input['description'];
                 $post->category_id = $input['category_id'];
+                $post->summary = $input['summary'];
                 $post->image_link = $imagePath;
 
                 if ($post->save()) {
@@ -224,9 +233,10 @@ class Controller_Post extends Controller_Template
     {
         $val = Validation::forge();
 
-        $val->add_field('title', 'Title', 'required|max_length[255]');
-        $val->add_field('description', 'Description', 'required');
-        $val->add_field('category_id', 'Category', 'required');
+        $val->add_field('title', 'Title', 'required|trim|xss_clean|max_length[255]');
+        $val->add_field('description', 'Description', 'required|trim|xss_clean');
+        $val->add_field('category_id', 'Category', 'required|trim|xss_clean|valid_string[numeric]');
+        $val->add_field('summary', 'Summary', 'trim|xss_clean');
 
         return $val;
     }

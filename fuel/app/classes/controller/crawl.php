@@ -1,21 +1,24 @@
 <?php
-class Controller_Crawl extends Controller
+class Controller_Crawl extends \Fuel\Core\Controller_Rest
 {
-    public function action_crawl_dantri()
+    protected $format = 'json';
+    public function get_dantri()
     {
         if (!\Util\AuthUtil::isAdmin()) {
-            return Response::forge('Forbidden', 403);
+            return $this->response([
+                'success' => false,
+                'message' => 'Forbidden'
+            ], 403);
         }
 
-        $categoryId = (int) Input::get('category_id', 1);
-
+        $categoryId = (int) \Input::get('category_id', 1);
 
         $allowedCategories = [1, 2, 3, 4, 5, 6, 7, 8];
         if (!in_array($categoryId, $allowedCategories, true)) {
-            return json_encode([
+            return $this->response([
                 'success' => false,
                 'message' => 'Category không phải của báo Dân Trí'
-            ]);
+            ], 400);
         }
 
         $crawler = new Service_Crawler();
@@ -23,28 +26,29 @@ class Controller_Crawl extends Controller
         $newCount = 0;
 
         foreach ($posts as $post) {
-            $exists = Model_Post::find('first', [
+            $exists = \Model_Post::find('first', [
                 'where' => ['post_id' => $post['post_id']]
             ]);
-
             if (!$exists) {
-                if (Model_Post::forge($post)->save()) {
+                if (\Model_Post::forge($post)->save()) {
                     $newCount++;
                 }
             }
         }
 
-        return json_encode([
+        return $this->response([
             'success' => true,
             'message' => "{$newCount} bài viết mới được lưu."
         ]);
-
     }
 
-    public function action_crawl_summary()
+    public function post_crawl_summary()
     {
         if (!\Util\AuthUtil::isAdmin()) {
-            return Response::forge('Forbidden', 403);
+            return $this->response([
+                'success' => false,
+                'message' => 'Forbidden'
+            ], 403);
         }
 
         $postsEmpty = \Model_Post::query()
@@ -53,7 +57,7 @@ class Controller_Crawl extends Controller
             ->limit(12)
             ->get();
 
-        $crawler = new Service_Crawlsummary();
+        $crawler = new \Service_Crawlsummary();
         $countUpdated = 0;
 
         foreach ($postsEmpty as $post) {
@@ -67,12 +71,10 @@ class Controller_Crawl extends Controller
             sleep(2);
         }
 
-        return json_encode([
+        return $this->response([
             'success' => true,
             'message' => "{$countUpdated} bài viết đã được crawl và lưu."
         ]);
-
     }
-
 
 }

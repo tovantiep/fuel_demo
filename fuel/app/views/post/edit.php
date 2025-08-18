@@ -14,7 +14,8 @@
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(4px);
         padding: 2rem 2rem 1.5rem 2rem;
-        max-width: 600px;
+        max-width: 100%;
+        width: 900px;
         margin: 0 auto;
     }
 
@@ -60,7 +61,7 @@
     </div>
 
     <div class="row justify-content-center">
-        <div class="col-12 col-md-8 col-lg-6">
+        <div class="col-12 col-md-10 col-lg-10">
             <div class="card signup-card shadow-lg">
                 <div class="card-body">
                     <?php if (!empty($errors)): ?>
@@ -74,6 +75,7 @@
                     <?php endif; ?>
 
                     <form method="post" enctype="multipart/form-data" autocomplete="off">
+                        <?php echo \Form::csrf(); ?>
                         <div class="mb-3">
                             <label for="title" class="form-label">Title</label>
                             <input type="text" class="form-control" id="title" name="title"
@@ -117,6 +119,11 @@
                             </select>
                         </div>
 
+                        <div class="mb-3">
+                            <label for="summary" class="form-label">Summary</label>
+                            <textarea class="form-control" id="summary" name="summary" rows="5"><?= e($post->summary ?? '')  ?></textarea>
+                        </div>
+
                         <button type="submit" class="btn btn-primary w-100 mt-2">Update Post</button>
                     </form>
                 </div>
@@ -124,7 +131,7 @@
         </div>
     </div>
 </div>
-
+<script src="https://cdn.tiny.cloud/1/uv866seovgmzncjuqbk90zn75t1hazvdaqcq1305y80qxfpx/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
     document.getElementById('image_link').addEventListener('change', function(event) {
         const file = event.target.files[0];
@@ -146,6 +153,18 @@
             preview.src = '';
             preview.style.display = 'none';
         }
+    });
+
+    tinymce.init({
+        selector: '#summary',
+        height: 300,
+        menubar: false,
+        plugins: 'advlist autolink lists link image charmap preview anchor ' +
+            'searchreplace visualblocks code fullscreen ' +
+            'insertdatetime media table code help wordcount',
+        toolbar: 'undo redo | formatselect | bold italic backcolor | ' +
+            'alignleft aligncenter alignright alignjustify | ' +
+            'bullist numlist outdent indent | removeformat | help'
     });
 </script>
 

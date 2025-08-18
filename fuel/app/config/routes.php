@@ -62,6 +62,6 @@ return array(
     'category/update/(:num)' => 'category/update/$1',
     'category/delete/(:num)' => 'category/delete/$1',
 
-    'crawl' => 'crawl/crawl_dantri',
+    'crawl/dantri' => 'crawl/dantri',
     'crawl/summary' => 'crawl/crawl_summary',
 );

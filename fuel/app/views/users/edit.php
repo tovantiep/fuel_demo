@@ -72,6 +72,7 @@
                         </div>
                     <?php endif; ?>
                     <form id="editUserForm" method="post" autocomplete="off">
+                        <?php echo \Form::csrf(); ?>
                         <div class="mb-3">
                             <label for="username" class="form-label">UserName</label>
                             <input type="text" class="form-control" id="username" name="username"

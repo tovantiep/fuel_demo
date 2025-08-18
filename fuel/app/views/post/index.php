@@ -140,11 +140,16 @@
 
         const categoryId = document.querySelector('select[name="category_id"]').value;
 
-        let url = '<?= Uri::create("crawl/crawl_dantri") ?>';
+        let url = '<?= Uri::create("crawl/dantri") ?>';
         if (categoryId) {
             url += '?category_id=' + encodeURIComponent(categoryId);
         }
-        fetch(url)
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
             .then(response => response.json())
             .then(data => {
                 alert(data.message);
@@ -152,7 +157,6 @@
             })
             .catch(err => {
                 alert("Có lỗi xảy ra khi crawl bài viết.");
-                location.reload();
             });
     });
 </script>
