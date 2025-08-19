@@ -55,7 +55,7 @@
                 <path fill-rule="evenodd"
                       d="M15 8a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 7.5H14.5A.5.5 0 0 1 15 8z"/>
             </svg>
-            Back to Users
+            <?= \Lang::get('app.back_to_users') ?>
         </a>
     </div>
     <div class="row justify-content-center">
@@ -74,21 +74,21 @@
                     <form id="createUserForm" method="post" autocomplete="off">
                         <?php echo \Form::csrf(); ?>
                         <div class="mb-3">
-                            <label for="username" class="form-label">UserName</label>
+                            <label for="username" class="form-label"><?= \Lang::get('app.username') ?></label>
                             <input type="text" class="form-control" id="username" name="username"
                                    value="<?= e(isset($input['username']) ? $input['username'] : '') ?>" required>
                         </div>
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
+                            <label for="email" class="form-label"><?= \Lang::get('app.email') ?></label>
                             <input type="email" class="form-control" id="email" name="email"
                                    value="<?= e(isset($input['email']) ? $input['email'] : '') ?>" required>
                         </div>
                         <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
+                            <label for="password" class="form-label"><?= \Lang::get('app.password') ?></label>
                             <input type="password" class="form-control" id="password" name="password" required
                                    minlength="6">
                         </div>
-                        <button type="submit" class="btn btn-primary w-100 mt-2">Create User</button>
+                        <button type="submit" class="btn btn-primary w-100 mt-2"><?= \Lang::get('app.create') ?></button>
                     </form>
                 </div>
             </div>

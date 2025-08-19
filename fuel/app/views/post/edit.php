@@ -56,7 +56,7 @@
                 <path fill-rule="evenodd"
                       d="M15 8a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 7.5H14.5A.5.5 0 0 1 15 8z"/>
             </svg>
-            Back to posts
+            <?= \Fuel\Core\Lang::get('app.back_to_posts') ?>
         </a>
     </div>
 
@@ -77,39 +77,57 @@
                     <form method="post" enctype="multipart/form-data" autocomplete="off">
                         <?php echo \Form::csrf(); ?>
                         <div class="mb-3">
-                            <label for="title" class="form-label">Title</label>
+                            <label for="title" class="form-label"><?= \Fuel\Core\Lang::get('app.title') ?></label>
                             <input type="text" class="form-control" id="title" name="title"
                                    value="<?= e($post->title ?? '') ?>" required>
                         </div>
 
                         <div class="mb-3">
-                            <label for="description" class="form-label">Description</label>
-                            <textarea class="form-control" id="description" name="description" rows="3" required><?= e($post->description ?? '') ?></textarea>
+                            <label for="description"
+                                   class="form-label"><?= \Fuel\Core\Lang::get('app.description') ?></label>
+                            <textarea class="form-control" id="description" name="description" rows="3"
+                                      required><?= e($post->description ?? '') ?></textarea>
                         </div>
 
                         <div class="mb-3">
-                            <label for="image_link" class="form-label">Image</label><br>
+                            <label for="image_link"
+                                   class="form-label"><?= \Fuel\Core\Lang::get('app.image') ?></label><br>
 
                             <?php if (!empty($post->image_link)): ?>
                                 <?php if (preg_match('/^https?:\/\//', $post->image_link)): ?>
-                                    <img id="currentImage" src="<?= e($post->image_link) ?>" alt="Current Image" style="max-width:200px; margin-bottom:10px;">
+                                    <img id="currentImage" src="<?= e($post->image_link) ?>" alt="Current Image"
+                                         style="max-width:200px; margin-bottom:10px;">
                                 <?php elseif (file_exists(DOCROOT . $post->image_link)): ?>
-                                    <img id="currentImage" src="<?= Uri::base() . $post->image_link ?>" alt="Current Image" style="max-width:200px; margin-bottom:10px;">
+                                    <img id="currentImage" src="<?= Uri::base() . $post->image_link ?>"
+                                         alt="Current Image" style="max-width:200px; margin-bottom:10px;">
                                 <?php else: ?>
-                                    <p class="text-muted" id="noImageText">Image not found.</p>
+                                    <p class="text-muted"
+                                       id="noImageText"><?= \Fuel\Core\Lang::get('app.image_not_found') ?></p>
                                 <?php endif; ?>
                             <?php else: ?>
-                                <p class="text-muted" id="noImageText">No image uploaded.</p>
+                                <p class="text-muted"
+                                   id="noImageText"><?= \Fuel\Core\Lang::get('app.no_image_uploaded') ?></p>
                             <?php endif; ?>
 
-                            <input type="file" name="image_link" id="image_link" accept="image/*">
-                            <img id="previewImage" src="" alt="Preview" style="display:none;max-width:200px;margin-top:10px;">
+                            <input type="file" name="image_link" id="image_link" accept="image/*" style="display:none;">
+
+                            <button type="button" id="btnChooseFile" class="btn btn-secondary">
+                                <?= \Fuel\Core\Lang::get('app.choose_file') ?>
+                            </button>
+                            <span id="fileName" style="margin-left:10px;">
+                                <?= \Fuel\Core\Lang::get('app.no_file_chosen') ?>
+                            </span>
+
+                            <br>
+                            <!-- preview ảnh mới -->
+                            <img id="previewImage" src="" alt="Preview"
+                                 style="display:none;max-width:200px;margin-top:10px;">
                         </div>
 
                         <div class="mb-3">
-                            <label for="category_id" class="form-label">Category</label>
+                            <label for="category_id" class="form-label"><?= \Fuel\Core\Lang::get('app.category') ?></label>
                             <select class="form-select" id="category_id" name="category_id" required>
-                                <option value="">-- Select Category --</option>
+                                <option value="">-- <?= \Fuel\Core\Lang::get('app.all_categories') ?> --</option>
                                 <?php foreach ($categories as $category): ?>
                                     <option value="<?= $category->id ?>"
                                         <?= ($post->category_id == $category->id) ? 'selected' : '' ?>>
@@ -120,39 +138,56 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="summary" class="form-label">Summary</label>
-                            <textarea class="form-control" id="summary" name="summary" rows="5"><?= e($post->summary ?? '')  ?></textarea>
+                            <label for="summary" class="form-label"><?= \Fuel\Core\Lang::get('app.summary') ?></label>
+                            <textarea class="form-control" id="summary" name="summary"
+                                      rows="5"><?= e($post->summary ?? '') ?></textarea>
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100 mt-2">Update Post</button>
+                        <button type="submit" class="btn btn-primary w-100 mt-2"><?= \Fuel\Core\Lang::get('app.update') ?></button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<script src="https://cdn.tiny.cloud/1/uv866seovgmzncjuqbk90zn75t1hazvdaqcq1305y80qxfpx/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="https://cdn.tiny.cloud/1/uv866seovgmzncjuqbk90zn75t1hazvdaqcq1305y80qxfpx/tinymce/6/tinymce.min.js"
+        referrerpolicy="origin"></script>
 <script>
-    document.getElementById('image_link').addEventListener('change', function(event) {
-        const file = event.target.files[0];
-        const preview = document.getElementById('previewImage');
-        const currentImage = document.getElementById('currentImage');
-        const noImageText = document.getElementById('noImageText');
+    document.addEventListener("DOMContentLoaded", function () {
+        const btnChoose = document.getElementById("btnChooseFile");
+        const inputFile = document.getElementById("image_link");
+        const fileName = document.getElementById("fileName");
+        const preview = document.getElementById("previewImage");
+        const currentImage = document.getElementById("currentImage");
+        const noImageText = document.getElementById("noImageText");
 
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                preview.src = e.target.result;
-                preview.style.display = 'block';
+        // Ấn nút thì mở input file ẩn
+        btnChoose.addEventListener("click", function () {
+            inputFile.click();
+        });
 
-                if (currentImage) currentImage.style.display = 'none';
-                if (noImageText) noImageText.style.display = 'none';
+        // Khi chọn file mới
+        inputFile.addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                fileName.textContent = file.name;
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.style.display = "block";
+
+                    // Ẩn ảnh cũ và text cũ nếu có
+                    if (currentImage) currentImage.style.display = "none";
+                    if (noImageText) noImageText.style.display = "none";
+                };
+                reader.readAsDataURL(file);
+            } else {
+                fileName.textContent = "<?= \Fuel\Core\Lang::get('app.no_file_chosen') ?>";
+                preview.src = "";
+                preview.style.display = "none";
             }
-            reader.readAsDataURL(file);
-        } else {
-            preview.src = '';
-            preview.style.display = 'none';
-        }
+        });
     });
 
     tinymce.init({

@@ -21,6 +21,7 @@ return array(
 	'_root_' => 'welcome/index',
     'detail/(:num)' => 'welcome/detail/$1',
 
+
 	/**
 	 * -------------------------------------------------------------------------
 	 *  Page not found
@@ -64,4 +65,6 @@ return array(
 
     'crawl/dantri' => 'crawl/dantri',
     'crawl/summary' => 'crawl/crawl_summary',
+
+    'lang/switch/(:any)' => 'lang/switch/$1',
 );

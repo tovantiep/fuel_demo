@@ -2,11 +2,11 @@
     <div class="row">
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 py-4">
             <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
-                <h2 class="mb-0 me-3">Post List</h2>
+                <h2 class="mb-0 me-3"><?= \Fuel\Core\Lang::get('app.post_list') ?></h2>
 
                 <?php if (\Util\AuthUtil::isAdmin()): ?>
                     <div class="d-flex gap-2">
-                        <?= Html::anchor('post/create', '<i class="bi bi-plus-lg"></i> Create Post', [
+                        <?= Html::anchor('post/create', '<i class="bi bi-plus-lg"></i>' .\Fuel\Core\Lang::get('app.create') , [
                             'class' => 'btn btn-primary',
                         ]) ?>
                     </div>
@@ -16,7 +16,7 @@
             <form method="get" action="<?= Uri::create('post/index') ?>" class="row g-2 mb-3" id="searchForm">
                 <div class="col-auto">
                     <select name="category_id" class="form-select">
-                        <option value="">-- All Categories --</option>
+                        <option value="">-- <?= \Fuel\Core\Lang::get('app.all_categories') ?>--</option>
                         <?php foreach ($categories as $category): ?>
                             <option value="<?= $category->id ?>"
                                 <?= Input::get('category_id') == $category->id ? 'selected' : '' ?>>
@@ -29,18 +29,18 @@
                 <div class="col-auto">
                     <input type="text" name="keyword"
                            class="form-control"
-                           placeholder="Search keyword..."
+                           placeholder="<?= \Fuel\Core\Lang::get('app.search_keyword') ?>"
                            value="<?= e(Input::get('keyword')) ?>">
                 </div>
 
                 <div class="col-auto">
                     <button type="submit" class="btn btn-secondary">
-                        <i class="bi bi-search"></i> Search
+                        <i class="bi bi-search"></i> <?= \Fuel\Core\Lang::get('app.search') ?>
                     </button>
                 </div>
                 <?php if (\Util\AuthUtil::isAdmin()): ?>
                     <div class="col-auto">
-                        <?= Html::anchor('#', '<i></i> Crawl Post', [
+                        <?= Html::anchor('#', '<i></i>'. \Fuel\Core\Lang::get('app.crawl'), [
                             'class' => 'btn btn-secondary',
                             'id' => 'btnCrawlPost'
                         ]) ?>
@@ -52,12 +52,12 @@
                 <table class="table table-striped table-hover align-middle">
                     <thead class="table-dark">
                     <tr>
-                        <th>ID</th>
-                        <th>Category</th>
-                        <th>Title</th>
-                        <th>Description</th>
+                        <th><?= \Fuel\Core\Lang::get('app.id') ?></th>
+                        <th><?= \Fuel\Core\Lang::get('app.category') ?></th>
+                        <th><?= \Fuel\Core\Lang::get('app.title') ?></th>
+                        <th><?= \Fuel\Core\Lang::get('app.description') ?></th>
                         <?php if (\Util\AuthUtil::isAdmin()): ?>
-                            <th>Actions</th>
+                            <th><?= \Fuel\Core\Lang::get('app.actions') ?></th>
                         <?php endif; ?>
                     </tr>
                     </thead>
@@ -88,7 +88,7 @@
                                             <?= Html::anchor($deleteUrl, '<i class="bi bi-trash"></i>', [
                                                 'class' => 'btn btn-sm btn-outline-danger',
                                                 'title' => 'Delete',
-                                                'onclick' => "return confirm('Are you sure you want to delete this post?');"
+                                                'onclick' => "return confirm('" . \Lang::get('app.confirm_delete') . "');"
                                             ]) ?>
                                         </div>
                                     </td>
@@ -97,8 +97,7 @@
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="<?= \Util\AuthUtil::isAdmin() ? 4 : 3 ?>" class="text-center text-muted">No
-                                Posts found.
+                            <td colspan="<?= \Util\AuthUtil::isAdmin() ? 4 : 3 ?>" class="text-center text-muted"><?= \Fuel\Core\Lang::get('app.no_record_found') ?>
                             </td>
                         </tr>
                     <?php endif; ?>
@@ -110,7 +109,7 @@
                 <!-- Per page dropdown -->
                 <form method="get" action="<?= Uri::create('post/index') ?>"
                       class="d-flex align-items-center mb-3 mb-md-0">
-                    <label for="per_page" class="me-2 mb-0">Show:</label>
+                    <label for="per_page" class="me-2 mb-0"><?= \Fuel\Core\Lang::get('app.show') ?></label>
                     <select name="per_page" id="per_page" class="form-select form-select-sm me-2"
                             onchange="this.form.submit()">
                         <?php foreach ([10, 20, 50] as $limit): ?>

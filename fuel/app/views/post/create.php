@@ -56,7 +56,7 @@
                 <path fill-rule="evenodd"
                       d="M15 8a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 7.5H14.5A.5.5 0 0 1 15 8z"/>
             </svg>
-            Back to posts
+            <?= \Fuel\Core\Lang::get('app.back_to_posts') ?>
         </a>
     </div>
     <div class="row justify-content-center">
@@ -76,27 +76,32 @@
                     <form method="post" enctype="multipart/form-data" autocomplete="off">
                         <?php echo \Form::csrf(); ?>
                         <div class="mb-3">
-                            <label for="title" class="form-label">Title</label>
+                            <label for="title" class="form-label"><?= \Fuel\Core\Lang::get('app.title') ?></label>
                             <input type="text" class="form-control" id="title" name="title"
                                    value="<?= e($input['title'] ?? '') ?>" required>
                         </div>
 
                         <div class="mb-3">
-                            <label for="description" class="form-label">Description</label>
+                            <label for="description" class="form-label"><?= \Fuel\Core\Lang::get('app.description') ?></label>
                             <textarea class="form-control" id="description" name="description" rows="3" required><?= e($input['description'] ?? '') ?></textarea>
                         </div>
 
                         <div>
-                            <label for="image_link" class="form-label">Image</label>
-                            <input type="file" name="image_link" id="image_link" accept="image/*">
+                            <label for="image_link" class="form-label"><?= \Fuel\Core\Lang::get('app.image') ?></label>
+                            <input type="file" name="image_link" id="image_link" accept="image/*" style="display:none;">
+
+                            <!-- nút chọn file giả -->
+                            <button type="button" id="btnChooseFile" class="btn btn-secondary"><?= \Fuel\Core\Lang::get('app.choose_file') ?></button>
+                            <span id="fileName" style="margin-left:10px;"><?= \Fuel\Core\Lang::get('app.no_file_chosen') ?></span>
+
                             <br>
                             <img id="previewImage" src="" alt="Preview" style="display:none;max-width:200px;margin-top:10px;">
                         </div>
 
                         <div class="mb-3">
-                            <label for="category_id" class="form-label">Category</label>
+                            <label for="category_id" class="form-label"><?= \Fuel\Core\Lang::get('app.category') ?></label>
                             <select class="form-select" id="category_id" name="category_id" required>
-                                <option value="">-- Select Category --</option>
+                                <option value="">-- <?= \Fuel\Core\Lang::get('app.all_categories') ?>--</option>
                                 <?php foreach ($categories as $category): ?>
                                     <option value="<?= $category->id ?>"
                                         <?= (isset($input['category_id']) && $input['category_id'] == $category->id) ? 'selected' : '' ?>>
@@ -107,11 +112,11 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="summary" class="form-label">Summary</label>
+                            <label for="summary" class="form-label"><?= \Fuel\Core\Lang::get('app.summary') ?></label>
                             <textarea class="form-control" id="summary" name="summary" rows="5"><?= e($input['summary'] ?? '') ?></textarea>
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100 mt-2">Create Post</button>
+                        <button type="submit" class="btn btn-primary w-100 mt-2"><?= \Fuel\Core\Lang::get('app.create') ?></button>
                     </form>
                 </div>
             </div>
@@ -123,20 +128,28 @@
 
 <!-- Custom JS -->
 <script>
-    document.getElementById('image_link').addEventListener('change', function(event) {
-        const file = event.target.files[0];
-        const preview = document.getElementById('previewImage');
+    document.getElementById("btnChooseFile").addEventListener("click", function() {
+        document.getElementById("image_link").click();
+    });
 
-        if (file) {
+    document.getElementById("image_link").addEventListener("change", function() {
+        const fileInput = this;
+        const fileNameSpan = document.getElementById("fileName");
+        const previewImage = document.getElementById("previewImage");
+
+        if (fileInput.files && fileInput.files[0]) {
+            fileNameSpan.textContent = fileInput.files[0].name;
+
+            // Hiển thị preview ảnh
             const reader = new FileReader();
             reader.onload = function(e) {
-                preview.src = e.target.result;
-                preview.style.display = 'block';
+                previewImage.src = e.target.result;
+                previewImage.style.display = "block";
             }
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(fileInput.files[0]);
         } else {
-            preview.src = '';
-            preview.style.display = 'none';
+            fileNameSpan.textContent = "<?= \Fuel\Core\Lang::get('app.no_file_chosen') ?>";
+            previewImage.style.display = "none";
         }
     });
 

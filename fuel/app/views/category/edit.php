@@ -55,7 +55,7 @@
                 <path fill-rule="evenodd"
                       d="M15 8a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 7.5H14.5A.5.5 0 0 1 15 8z"/>
             </svg>
-            Back to Categories
+            <?= \Fuel\Core\Lang::get('app.back_to_categories')?>
         </a>
     </div>
 
@@ -75,11 +75,11 @@
 
                     <form method="post" enctype="multipart/form-data" autocomplete="off">
                         <div class="mb-3">
-                            <label for="name" class="form-label">Name</label>
+                            <label for="name" class="form-label"><?= \Fuel\Core\Lang::get('app.category_name')?></label>
                             <input type="text" class="form-control" id="name" name="name"
                                    value="<?= e($category->name ?? '') ?>" required>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100 mt-2">Update Category</button>
+                        <button type="submit" class="btn btn-primary w-100 mt-2"><?= \Fuel\Core\Lang::get('app.update')?></button>
                     </form>
                 </div>
             </div>

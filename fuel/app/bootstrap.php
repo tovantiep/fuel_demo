@@ -35,3 +35,8 @@ Fuel::$env = Arr::get($_SERVER, 'FUEL_ENV', Arr::get($_ENV, 'FUEL_ENV', getenv('
 \Fuel::init('config.php');
 
 require APPPATH . '../vendor/autoload.php';
+
+if (\Session::get('lang')) {
+    \Config::set('language', \Session::get('lang'));
+}
+\Lang::load('app', true);
