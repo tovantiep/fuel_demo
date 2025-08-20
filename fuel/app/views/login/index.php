@@ -19,6 +19,7 @@
     <?php endif; ?>
 
     <form method="post" action="/login/login">
+        <?php echo \Form::csrf(); ?>
         <div class="form-group">
             <label for="email">Username:</label>
             <input type="text" class="form-control" id="email" placeholder="Enter username or email" name="username"

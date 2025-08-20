@@ -56,6 +56,7 @@
             <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap">
                 <!-- Per page dropdown -->
                 <form method="get" action="<?= Uri::create('users/index') ?>" class="d-flex align-items-center mb-3 mb-md-0">
+                    <?php echo \Form::csrf(); ?>
                     <label for="per_page" class="me-2 mb-0"><?= \Lang::get('app.show') ?></label>
                     <select name="per_page" id="per_page" class="form-select form-select-sm me-2" onchange="this.form.submit()">
                         <?php foreach ([10, 20, 50] as $limit): ?>

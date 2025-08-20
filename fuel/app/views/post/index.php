@@ -14,6 +14,7 @@
             </div>
 
             <form method="get" action="<?= Uri::create('post/index') ?>" class="row g-2 mb-3" id="searchForm">
+                <?php echo \Form::csrf(); ?>
                 <div class="col-auto">
                     <select name="category_id" class="form-select">
                         <option value="">-- <?= \Fuel\Core\Lang::get('app.all_categories') ?>--</option>
@@ -109,6 +110,7 @@
                 <!-- Per page dropdown -->
                 <form method="get" action="<?= Uri::create('post/index') ?>"
                       class="d-flex align-items-center mb-3 mb-md-0">
+                    <?php echo \Form::csrf(); ?>
                     <label for="per_page" class="me-2 mb-0"><?= \Fuel\Core\Lang::get('app.show') ?></label>
                     <select name="per_page" id="per_page" class="form-select form-select-sm me-2"
                             onchange="this.form.submit()">

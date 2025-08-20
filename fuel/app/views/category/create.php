@@ -73,6 +73,7 @@
                     <?php endif; ?>
 
                     <form method="post" enctype="multipart/form-data" autocomplete="off">
+                        <?php echo \Form::csrf(); ?>
                         <div class="mb-3">
                             <label for="name" class="form-label">  <?= \Fuel\Core\Lang::get('app.category_name')?></label>
                             <input type="text" class="form-control" id="name" name="name"

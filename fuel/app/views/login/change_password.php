@@ -47,6 +47,7 @@
         <?php endif; ?>
 
         <form method="post" action="/login/change_password">
+            <?php echo \Form::csrf(); ?>
             <div class="form-group">
                 <label for="old_password"><?= \Fuel\Core\Lang::get('app.old_password')?></label>
                 <input type="password" id="old_password" name="old_password" class="form-control"  required>
