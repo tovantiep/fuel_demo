@@ -23,10 +23,7 @@ class Controller_Welcome extends Controller
 {
     public function action_index()
     {
-        $query = \Model_Post::query()
-            ->related('category')
-            ->order_by('id', 'desc');
-
+        $query = \Model_Post::query()->related('category')->order_by('id', 'desc');
         $category_id = \Input::get('category_id', null);
         $current_category = null;
 
@@ -38,13 +35,10 @@ class Controller_Welcome extends Controller
         $posts = $query->get();
         $categories = Model_Category::find('all');
 
-        return Response::forge(
-            View::forge('welcome/index', [
-                'posts' => $posts,
-                'categories' => $categories,
-                'current_category' => $current_category
-            ])
-        );
+        return Response::forge(Presenter::forge('welcome/index')
+            ->set('posts', $posts)
+            ->set('categories', $categories)
+            ->set('current_category', $current_category));
     }
 
     public function action_detail($id = null)

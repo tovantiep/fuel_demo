@@ -141,19 +141,22 @@
         <?php foreach ($posts as $post): ?>
             <div class="news-item">
                 <div class="news-content">
-                    <?php
-                    $date = new DateTime('@' . $post->created_at);
-                    $date->modify('+7 hours');
-                    ?>
                     <div class="news-time">
-                        <?= $date->format('H:i d/m/Y') ?>
+                        <?= e($post['created_at']) ?>
                     </div>
-                    <a href="<?= e($post->content_link) ?>" class="news-title" target="_blank"><?= e($post->title) ?></a>
-                    <div class="news-desc"><?= e($post->description) ?></div>
+                    <?php
+                    $href = !empty($post['summary'])
+                        ? \Fuel\Core\Uri::create('detail/'.$post['id'])
+                        : $post['content_link'];
+                    ?>
+                    <a href="<?= e($href) ?>" class="news-title" target="_blank">
+                        <?= e($post['title']) ?>
+                    </a>
+                    <div class="news-desc"><?= e($post['description']) ?></div>
                 </div>
-                <?php if (!empty($post->image_link)): ?>
+                <?php if (!empty($post['image_link'])): ?>
                     <div class="news-thumb">
-                        <img src="<?= e($post->image_link) ?>" alt="<?= e($post->title) ?>">
+                        <img src="<?= e($post['image_link']) ?>" alt="<?= e($post['title']) ?>">
                     </div>
                 <?php endif; ?>
             </div>

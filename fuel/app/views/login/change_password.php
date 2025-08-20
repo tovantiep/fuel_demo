@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Profile - Change Password</title>
+    <title><?= \Fuel\Core\Lang::get('app.change_password')?></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap 3 CSS -->
@@ -32,36 +32,36 @@
 
 <div class="container">
     <div class="profile-card">
-        <h2>Change Password</h2>
+        <h2><?= \Fuel\Core\Lang::get('app.change_password')?></h2>
 
         <?php if (\Session::get_flash('successMessage')): ?>
             <div class="alert alert-success">
-                <strong>Success!</strong> <?= \Session::get_flash('successMessage') ?>
+                <strong><?= \Fuel\Core\Lang::get('app.success')?>!</strong> <?= \Session::get_flash('successMessage') ?>
             </div>
         <?php endif; ?>
 
         <?php if (\Session::get_flash('errorMessage')): ?>
             <div class="alert alert-danger">
-                <strong>Error!</strong> <?= \Session::get_flash('errorMessage') ?>
+                <strong><?= \Fuel\Core\Lang::get('app.error')?></strong> <?= \Session::get_flash('errorMessage') ?>
             </div>
         <?php endif; ?>
 
         <form method="post" action="/login/change_password">
             <div class="form-group">
-                <label for="old_password">Old Password</label>
-                <input type="password" id="old_password" name="old_password" class="form-control" placeholder="Enter old password" required>
+                <label for="old_password"><?= \Fuel\Core\Lang::get('app.old_password')?></label>
+                <input type="password" id="old_password" name="old_password" class="form-control"  required>
             </div>
             <div class="form-group">
-                <label for="new_password">New Password</label>
-                <input type="password" id="new_password" name="new_password" class="form-control" placeholder="Enter new password" required>
+                <label for="new_password"><?= \Fuel\Core\Lang::get('app.new_password')?></label>
+                <input type="password" id="new_password" name="new_password" class="form-control"  required>
             </div>
             <div class="form-group">
-                <label for="confirm_password">Confirm New Password</label>
-                <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Confirm new password" required>
+                <label for="confirm_password"><?= \Fuel\Core\Lang::get('app.confirm_new_password')?></label>
+                <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
             </div>
-            <button type="submit" class="btn btn-primary btn-block">Update Password</button>
+            <button type="submit" class="btn btn-primary btn-block"><?= \Fuel\Core\Lang::get('app.update')?></button>
             <br>
-            <a href="/users/index" class="btn btn-default btn-block">Back to Dashboard</a>
+            <a href="/users/index" class="btn btn-default btn-block"><?= \Fuel\Core\Lang::get('app.back_to_dashboard')?></a>
         </form>
     </div>
 </div>

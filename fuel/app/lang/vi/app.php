@@ -36,4 +36,10 @@ return [
     'management' => 'Quản lý',
     'posts' => 'Bài viết',
     'users' => 'Người dùng',
+    'old_password' => 'Mật khẩu cũ',
+    'new_password' => 'Mật khẩu mới',
+    'confirm_new_password' => 'Xác nhận mật khẩu mới',
+    'back_to_dashboard' => 'Quay lại bảng quản lý',
+    'success' => 'Thành công',
+    'error' => 'Lỗi',
 ];

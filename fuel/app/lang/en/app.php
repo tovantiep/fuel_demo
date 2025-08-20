@@ -36,5 +36,11 @@ return [
     'management' => 'Management System',
     'posts' => 'Posts',
     'users' => 'Users',
+    'old_password' => 'Old Password',
+    'new_password' => 'New Password',
+    'confirm_new_password' => 'Confirm New Password',
+    'back_to_dashboard' => 'Back to Dashboard',
+    'success' => 'Success',
+    'error' => 'Error',
 
 ];
