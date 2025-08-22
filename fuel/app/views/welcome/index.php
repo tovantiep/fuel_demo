@@ -110,6 +110,7 @@
 <div id="banner">
     <img src="https://cdn.dtadnetwork.com/creatives/img/202508/1754210829.jpg" class="header-banner active" alt="Banner">
     <img src="https://cdn.dtadnetwork.com/creatives/img/202508/1754998918.jpg" class="header-banner" alt="Banner">
+    <img src="https://cdn.dtadnetwork.com/creatives/img/202508/1754406583.png" class="header-banner" alt="Banner">
 </div>
 
 <!-- Navbar -->
@@ -132,39 +133,115 @@
 </nav>
 
 <!-- Content -->
-<div class="container">
-    <div class="section-title">
-        <?= !empty($current_category) ? e($current_category->name) : 'Báo Dân Trí' ?>
-    </div>
-
-    <?php if (!empty($posts)): ?>
-        <?php foreach ($posts as $post): ?>
-            <div class="news-item">
-                <div class="news-content">
-                    <div class="news-time">
-                        <?= e($post['created_at']) ?>
+<div class="container mt-4">
+    <?php if (empty($posts)): ?>
+        <div class="alert alert-info text-center">
+            Không có bài viết nào, sang Dân Trí trộm đi =))).
+        </div>
+    <?php else: ?>
+        <div class="row">
+            <!-- Cột trái: 2 bài nhỏ -->
+            <div class="col-md-3">
+                <?php foreach (array_slice($posts, 0, 2) as $post): ?>
+                    <div class="mb-3">
+                        <a href="<?= !empty($post['summary'])
+                            ? \Fuel\Core\Uri::create('detail/'.$post['id'])
+                            : $post['content_link'] ?>" class="text-decoration-none">
+                            <?php if (!empty($post['image_link'])): ?>
+                                <img src="<?= e($post['image_link']) ?>"
+                                     class="img-fluid mb-2"
+                                     alt="<?= e($post['title']) ?>">
+                            <?php endif; ?>
+                            <h6 class="fw-bold"><?= e($post['title']) ?></h6>
+                        </a>
                     </div>
-                    <?php
-                    $href = !empty($post['summary'])
-                        ? \Fuel\Core\Uri::create('detail/'.$post['id'])
-                        : $post['content_link'];
-                    ?>
-                    <a href="<?= e($href) ?>" class="news-title" target="_blank">
-                        <?= e($post['title']) ?>
-                    </a>
-                    <div class="news-desc"><?= e($post['description']) ?></div>
-                </div>
-                <?php if (!empty($post['image_link'])): ?>
-                    <div class="news-thumb">
-                        <img src="<?= e($post['image_link']) ?>" alt="<?= e($post['title']) ?>">
+                <?php endforeach; ?>
+            </div>
+
+            <!-- Cột giữa: 1 bài nổi bật -->
+            <div class="col-md-6">
+                <?php if (!empty($posts[2])): $post = $posts[2]; ?>
+                    <div class="card border-0">
+                        <?php if (!empty($post['image_link'])): ?>
+                            <img src="<?= e($post['image_link']) ?>"
+                                 class="card-img-top"
+                                 alt="<?= e($post['title']) ?>">
+                        <?php endif; ?>
+                        <div class="card-body">
+                            <h3 class="card-title fw-bold">
+                                <a href="<?= !empty($post['summary'])
+                                    ? \Fuel\Core\Uri::create('detail/'.$post['id'])
+                                    : $post['content_link'] ?>"
+                                   class="text-dark text-decoration-none">
+                                    <?= e($post['title']) ?>
+                                </a>
+                            </h3>
+                            <?php if (!empty($post['description'])): ?>
+                                <p class="card-text text-muted">
+                                    <?= e($post['description']) ?>
+                                </p>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 <?php endif; ?>
             </div>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <p>Không có bài viết nào. Hãy sang Dân Trí trộm bài =)))</p>
+
+            <!-- Cột phải: danh sách ngắn -->
+            <div class="col-md-3">
+                <?php foreach (array_slice($posts, 3, 5) as $post): ?>
+                    <div class="d-flex mb-3 border-bottom pb-2">
+                        <?php if (!empty($post['image_link'])): ?>
+                            <img src="<?= e($post['image_link']) ?>"
+                                 class="me-2"
+                                 style="width:80px; height:60px; object-fit:cover;"
+                                 alt="<?= e($post['title']) ?>">
+                        <?php endif; ?>
+                        <div>
+                            <a href="<?= !empty($post['summary'])
+                                ? \Fuel\Core\Uri::create('detail/'.$post['id'])
+                                : $post['content_link'] ?>"
+                               class="fw-bold text-dark small text-decoration-none">
+                                <?= e($post['title']) ?>
+                            </a>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+
+        <!-- Các bài còn lại hiển thị bên dưới -->
+        <?php if (count($posts) > 8): ?>
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <?php foreach (array_slice($posts, 8) as $post): ?>
+                        <div class="d-flex mb-4 border-bottom pb-3">
+                            <?php if (!empty($post['image_link'])): ?>
+                                <img src="<?= e($post['image_link']) ?>"
+                                     style="width:120px; height:80px; object-fit:cover;"
+                                     class="me-3"
+                                     alt="<?= e($post['title']) ?>">
+                            <?php endif; ?>
+                            <div>
+                                <a href="<?= !empty($post['summary'])
+                                    ? \Fuel\Core\Uri::create('detail/'.$post['id'])
+                                    : $post['content_link'] ?>"
+                                   class="fw-bold text-dark text-decoration-none">
+                                    <?= e($post['title']) ?>
+                                </a>
+                                <?php if (!empty($post['description'])): ?>
+                                    <p class="text-muted small mb-0">
+                                        <?= e(\Str::truncate($post['description'], 150)) ?>
+                                    </p>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        <?php endif; ?>
     <?php endif; ?>
 </div>
+
 <!-- Footer -->
 <footer class="bg-white border-top mt-4 pt-4 pb-4">
     <div class="container">
@@ -217,7 +294,7 @@
         banners[currentIndex].classList.remove('active');
         currentIndex = (currentIndex + 1) % banners.length;
         banners[currentIndex].classList.add('active');
-    }, 10000);
+    }, 5000);
     const navbar = document.getElementById('mainNavbar');
     const bannerHeight = document.getElementById('banner').offsetHeight;
 

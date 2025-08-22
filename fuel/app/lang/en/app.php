@@ -1,7 +1,7 @@
 <?php
 return [
     'user_list' => 'User List',
-    'create' => 'Create User',
+    'create' => 'Create',
     'id' => 'ID',
     'username' => 'UserName',
     'email' => 'Email',

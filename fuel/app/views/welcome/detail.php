@@ -185,7 +185,7 @@
         $html = strip_tags($html, '<img>');
         $html = html_entity_decode($html, ENT_QUOTES, 'UTF-8');
         $html = trim($html);
-
+        $html = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $html);
         echo nl2br($html);
         ?>
     </div>

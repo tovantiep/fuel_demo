@@ -118,7 +118,7 @@ class Controller_Post extends \Fuel\Core\Controller_Hybrid
                     'description' => \Input::post('description'),
                     'category_id' => \Input::post('category_id'),
                     'image_link' => $imagePath,
-                    'summary' => \Input::post('summary'),
+                    'summary' => \Security::xss_clean(\Input::post('summary')),
                     'post_id' => time()
                 ]);
 
@@ -187,7 +187,7 @@ class Controller_Post extends \Fuel\Core\Controller_Hybrid
                 $post->title = $input['title'];
                 $post->description = $input['description'];
                 $post->category_id = $input['category_id'];
-                $post->summary = $input['summary'];
+                $post->summary = \Security::xss_clean($input['summary']);
                 $post->image_link = $imagePath;
 
                 if ($post->save()) {
@@ -233,10 +233,10 @@ class Controller_Post extends \Fuel\Core\Controller_Hybrid
     {
         $val = Validation::forge();
 
-        $val->add_field('title', 'Title', 'required|trim|xss_clean|max_length[255]');
-        $val->add_field('description', 'Description', 'required|trim|xss_clean');
-        $val->add_field('category_id', 'Category', 'required|trim|xss_clean|valid_string[numeric]');
-        $val->add_field('summary', 'Summary', 'trim|xss_clean');
+        $val->add_field('title', 'Title', 'required|trim|max_length[255]');
+        $val->add_field('description', 'Description', 'required|trim');
+        $val->add_field('category_id', 'Category', 'required|trim|valid_string[numeric]');
+        $val->add_field('summary', 'Summary', 'trim');
 
         return $val;
     }
